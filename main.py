@@ -8,7 +8,7 @@ def screen_clear():
 
 
 def choose_try_again():
-    try_again = input('Do you want to try again? \n 1 - Yes \n 2 - No \n')
+    try_again = input('\nDo you want to try again? \n 1 - Yes \n 2 - No \n')
     if try_again == '1':
         screen_clear()
         main()
@@ -20,10 +20,10 @@ def choose_try_again():
 
 
 def print_groups(final_group):
-    print('The members for the groups are:')
+    print('The members for the groups are: \n')
     for count, members in enumerate(final_group):
         print(f'Group {count + 1} : {members}')
-
+  
 
 def get_groups(group, number_of_group_members, number_of_groups):
     final_group = [[ '' for j in range(int(number_of_group_members))] for i in range(number_of_groups)]
@@ -62,51 +62,51 @@ def add_members(group):
     screen_clear()
     new_member = input('Please provide the name of the new member! \n')
     group.append(new_member)
-    choose_custom_members(group)
+    return group
   
 
 def delete_members(group):
     group_dict = get_group_dict_from_list(group)
     print(f'{group_dict}')
-    remove_member = int(input('Please choose the member\'s number to remove the member! \n'))
+    remove_member = int(input('\nPlease choose the member\'s number to remove the member! \n'))
     if remove_member not in group_dict.keys():
         print('Provide a valid input!')
         delete_members(group)
     del group_dict[int(remove_member)]
     group = get_group_list_from_dict(group_dict)
-    choose_custom_members(group)
+    return group
   
 
 def choose_custom_members(group):
-    group = list(group)
-    screen_clear()
-    method = input(f'''
+    while True:
+        screen_clear()
+        method = input(f'''
 The current members are: {group}
 
 Do you want to add or delete a member or create a new list?
+        
+    1 - Add
+    2 - Delete
+    3 - Create new list
+    4 - I am done
+        
+    ''')
+        if method == '1':
+            screen_clear()
+            group = add_members(group)
+        elif method == '2':
+            screen_clear()
+            group = delete_members(group)
+        elif method == '3':
+            screen_clear()
+            group = []
+            group = add_members(group)
+        elif method == '4':
+            return group
+        else:
+            print('Please provide a valid input! \n')
+            choose_custom_members(group)
     
-1 - Add
-2 - Delete
-3 - Create new list
-4 - I am done
-    
-''')
-    if method == '1':
-        screen_clear()
-        add_members(group)
-    elif method == '2':
-        screen_clear()
-        delete_members(group)
-    elif method == '3':
-        screen_clear()
-        group = []
-        add_members(group)
-    elif method == '4':
-        return group
-    else:
-        print('Please provide a valid input! \n')
-        choose_custom_members(group)
-    return group
 
 
 def get_group_list_from_dict(group):
@@ -126,34 +126,34 @@ def get_group_dict_from_list(group):
 def choose_group():
     group = WHOLE_GROUP
     names = input(f'''
-Please provide the names to make the groups of!
+Please provide the members to make the groups of!
 1 - Whole group - {group}
 2 - Custom members
     
 ''')
     if names == '1':
-        return WHOLE_GROUP
+        return group
     elif names == '2':
-        choose_custom_members(group)
+        group = choose_custom_members(group)
+        return group
     else:
         print('Please provide a valid input! \n')
         choose_group()
-    return group
-
+    
 
 def welcome():
-    print('Welcome to the Random Group Creator! \n')
+    print('\nWelcome to the Random Group Creator! \n')
 
 
-def main(group=None):
+def main():
     welcome()
-    group = choose_group()
+    temp_group = choose_group()
     screen_clear()
-    number_of_group_members, number_of_groups = get_number_of_group_members(group)
-    final_groups = get_groups(group, number_of_group_members, number_of_groups)
+    number_of_group_members, number_of_groups = get_number_of_group_members(temp_group)
+    final_groups = get_groups(temp_group, number_of_group_members, number_of_groups)
     screen_clear()
     print_groups(final_groups)
     choose_try_again()
 
 if __name__ == '__main__':
-    main(group=None)
+    main()
