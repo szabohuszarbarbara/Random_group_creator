@@ -1,7 +1,9 @@
 import os
 import random
 
+
 WHOLE_GROUP = ['Kornél', 'Nelli', 'Balázs', 'Nándi', 'Évi', 'Bence', 'Barbi', 'Orsi', "Gee"]
+
 
 def screen_clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -25,21 +27,21 @@ def print_groups(final_group):
         print(f'Group {count + 1} : {members}')
 
 
-def choose_method_remainders(group, number_of_group_members, number_of_groups, final_group, shuffled_group, group_index):
+def choose_method_remainders(number_of_groups, final_group, shuffled_group, group_index):
     method = input(f'''
-    There are remaining members.
+    There are remaining members, {len(group_index)} person(s).
     How do you want to portion them?
     1 - Add to existing grops
     2 - Create a new group
     ''')
     if method == '1':
-        for count in range(len((group_index))):
+        for count in range(len(group_index)):
             index_num = random.choice(group_index)
             group_index.pop(group_index.index(index_num))
             final_group[count].append(shuffled_group[index_num])
     elif method == '2':
         final_group.append([])
-        for count in range(len((group_index))):
+        for count in range(len(group_index)):
             index_num = random.choice(group_index)
             group_index.pop(group_index.index(index_num))
             final_group[number_of_groups].append(shuffled_group[index_num])
@@ -57,7 +59,7 @@ def get_groups(group, number_of_group_members, number_of_groups):
             group_index.pop(group_index.index(index_num))
             final_group[i][j] = shuffled_group[index_num]
     if len(group_index) != 0:
-        final_group = choose_method_remainders(group, number_of_group_members, number_of_groups, final_group, shuffled_group, group_index)
+        final_group = choose_method_remainders(number_of_groups, final_group, shuffled_group, group_index)
     return final_group
 
 
@@ -154,6 +156,36 @@ Please provide the members to make the groups of!
     
 
 def welcome():
+    print('''
+  /$$$$$$$                            /$$                              
+| $$__  $$                          | $$                              
+| $$  \ $$  /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$  /$$$$$$/$$$$       
+| $$$$$$$/ |____  $$| $$__  $$ /$$__  $$ /$$__  $$| $$_  $$_  $$      
+| $$__  $$  /$$$$$$$| $$  \ $$| $$  | $$| $$  \ $$| $$ \ $$ \ $$      
+| $$  \ $$ /$$__  $$| $$  | $$| $$  | $$| $$  | $$| $$ | $$ | $$      
+| $$  | $$|  $$$$$$$| $$  | $$|  $$$$$$$|  $$$$$$/| $$ | $$ | $$      
+|__/  |__/ \_______/|__/  |__/ \_______/ \______/ |__/ |__/ |__/      
+        /$$$$$$                                                       
+       /$$__  $$                                                      
+      | $$  \__/  /$$$$$$  /$$$$$$  /$$   /$$  /$$$$$$                
+      | $$ /$$$$ /$$__  $$/$$__  $$| $$  | $$ /$$__  $$               
+      | $$|_  $$| $$  \__/ $$  \ $$| $$  | $$| $$  \ $$               
+      | $$  \ $$| $$     | $$  | $$| $$  | $$| $$  | $$               
+      |  $$$$$$/| $$     |  $$$$$$/|  $$$$$$/| $$$$$$$/               
+       \______/ |__/      \______/  \______/ | $$____/                
+                                             | $$                     
+  /$$$$$$                                 /$$| $$                     
+ /$$__  $$                               | $$|__/                     
+| $$  \__/  /$$$$$$  /$$$$$$   /$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$  
+| $$       /$$__  $$/$$__  $$ |____  $$|_  $$_/   /$$__  $$ /$$__  $$ 
+| $$      | $$  \__/ $$$$$$$$  /$$$$$$$  | $$    | $$  \ $$| $$  \__/ 
+| $$    $$| $$     | $$_____/ /$$__  $$  | $$ /$$| $$  | $$| $$       
+|  $$$$$$/| $$     |  $$$$$$$|  $$$$$$$  |  $$$$/|  $$$$$$/| $$       
+ \______/ |__/      \_______/ \_______/   \___/   \______/ |__/       
+                                                                      
+                                                                      
+                                                                                                                                                     
+                                                                                                              ''')
     print('\nWelcome to the Random Group Creator! \n')
 
 
