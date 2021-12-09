@@ -23,6 +23,27 @@ def print_groups(final_group):
     print('The members for the groups are: \n')
     for count, members in enumerate(final_group):
         print(f'Group {count + 1} : {members}')
+
+
+def choose_method_remainders(group, number_of_group_members, number_of_groups, final_group, shuffled_group, group_index):
+    method = input(f'''
+    There are remaining members.
+    How do you want to portion them?
+    1 - Add to existing grops
+    2 - Create a new group
+    ''')
+    if method == '1':
+        for count in range(len((group_index))):
+            index_num = random.choice(group_index)
+            group_index.pop(group_index.index(index_num))
+            final_group[count].append(shuffled_group[index_num])
+    elif method == '2':
+        final_group.append([])
+        for count in range(len((group_index))):
+            index_num = random.choice(group_index)
+            group_index.pop(group_index.index(index_num))
+            final_group[number_of_groups].append(shuffled_group[index_num])
+    return final_group
   
 
 def get_groups(group, number_of_group_members, number_of_groups):
@@ -35,17 +56,8 @@ def get_groups(group, number_of_group_members, number_of_groups):
             index_num = random.choice(group_index)
             group_index.pop(group_index.index(index_num))
             final_group[i][j] = shuffled_group[index_num]
-    if len(group) - number_of_groups * number_of_group_members > number_of_groups:
-        final_group.append([])
-        for count in range(len((group_index))):
-            index_num = random.choice(group_index)
-            group_index.pop(group_index.index(index_num))
-            final_group[number_of_groups].append(shuffled_group[index_num])
     if len(group_index) != 0:
-        for count in range(len((group_index))):
-            index_num = random.choice(group_index)
-            group_index.pop(group_index.index(index_num))
-            final_group[count].append(shuffled_group[index_num])
+        final_group = choose_method_remainders(group, number_of_group_members, number_of_groups, final_group, shuffled_group, group_index)
     return final_group
 
 
