@@ -11,14 +11,15 @@ def screen_clear():
 
 def choose_try_again():
     try_again = input('\nDo you want to try again? \n 1 - Yes \n 2 - No \n')
-    if try_again == '1':
-        screen_clear()
-        main()
-    elif try_again == '2':
-        quit()
-    else:
-        print('Please provide a valid input!')
-        choose_try_again()
+    while True:
+        if try_again == '1':
+            return True
+        elif try_again == '2':
+            # mainbe kihozni
+            quit()
+        else:
+            print('Please provide a valid input!')
+            
 
 
 def print_groups(final_group):
@@ -35,13 +36,13 @@ def choose_method_remainders(number_of_groups, final_group, shuffled_group, grou
     2 - Create a new group
     ''')
     if method == '1':
-        for count in range(len(group_index)):
+        for remainder_index in range(len(group_index)):
             index_num = random.choice(group_index)
             group_index.pop(group_index.index(index_num))
-            final_group[count].append(shuffled_group[index_num])
+            final_group[remainder_index].append(shuffled_group[index_num])
     elif method == '2':
         final_group.append([])
-        for count in range(len(group_index)):
+        for remainder_index in range(len(group_index)):
             index_num = random.choice(group_index)
             group_index.pop(group_index.index(index_num))
             final_group[number_of_groups].append(shuffled_group[index_num])
@@ -61,14 +62,20 @@ def get_groups(group, number_of_group_members, number_of_groups):
     if len(group_index) != 0:
         final_group = choose_method_remainders(number_of_groups, final_group, shuffled_group, group_index)
     return final_group
+    # shuffled listen iterál, a number_of_group_membersig egy csoportba rak, 
+    # a maradéknál megkérdezi, hogy hova tegye
 
 
 def get_number_of_group_members(group):
+    #input validation - letters, 0, input > members
+    
     number_of_group_members = int(input('How many people should be in a group? \n'))
-    number_of_groups = len(group) // number_of_group_members
-    if number_of_groups == 0:
+    if number_of_group_members == 0:
         print('Please provide a valid input')
+        #recursive 
         get_number_of_group_members(group)
+    number_of_groups = len(group) // number_of_group_members
+    
     return number_of_group_members, number_of_groups
    
  
@@ -83,6 +90,7 @@ def delete_members(group):
     group_dict = get_group_dict_from_list(group)
     print(f'{group_dict}')
     remove_member = int(input('\nPlease choose the member\'s number to remove the member! \n'))
+    # recursive
     if remove_member not in group_dict.keys():
         print('Provide a valid input!')
         delete_members(group)
@@ -119,8 +127,7 @@ Do you want to add or delete a member or create a new list?
             return group
         else:
             print('Please provide a valid input! \n')
-            choose_custom_members(group)
-    
+                
 
 
 def get_group_list_from_dict(group):
@@ -139,20 +146,21 @@ def get_group_dict_from_list(group):
 
 def choose_group():
     group = WHOLE_GROUP
-    names = input(f'''
+    while True:
+        names = input(f'''
 Please provide the members to make the groups of!
 1 - Whole group - {group}
 2 - Custom members
     
 ''')
-    if names == '1':
-        return group
-    elif names == '2':
-        group = choose_custom_members(group)
-        return group
-    else:
-        print('Please provide a valid input! \n')
-        choose_group()
+        if names == '1':
+            return group
+        elif names == '2':
+            group = choose_custom_members(group)
+            return group
+        else:
+            print('Please provide a valid input! \n')
+            
     
 
 def welcome():
@@ -191,13 +199,15 @@ def welcome():
 
 def main():
     welcome()
-    temp_group = choose_group()
-    screen_clear()
-    number_of_group_members, number_of_groups = get_number_of_group_members(temp_group)
-    final_groups = get_groups(temp_group, number_of_group_members, number_of_groups)
-    screen_clear()
-    print_groups(final_groups)
-    choose_try_again()
+    while True:
+        screen_clear()
+        temp_group = choose_group()
+        screen_clear()
+        number_of_group_members, number_of_groups = get_number_of_group_members(temp_group)
+        final_groups = get_groups(temp_group, number_of_group_members, number_of_groups)
+        screen_clear()
+        print_groups(final_groups)
+        choose_try_again()
 
 if __name__ == '__main__':
     main()
